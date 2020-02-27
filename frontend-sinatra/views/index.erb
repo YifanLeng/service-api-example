@@ -56,38 +56,54 @@
     if (!n || n == '') {
       n = "1";
     }
-    console.log("generate " + n + " users");
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    	if (xhttp.status >= 400) {
-    		document.getElementById("table").innerHTML = 
-    	    "An error occurred when generating users";
-    	}
+    if (confirm("generate " + n + " users")) {
+    	var xhttp = new XMLHttpRequest();
+	    xhttp.onreadystatechange = function() {
+	    	var status = xhttp.status;
+		    if (status === 0 || (200 <= status && status < 400)) {
+		      // The request has been completed successfully
+		      document.getElementById("table").innerHTML = 
+	    	    "<h2>" + n + " users have been written to \
+	    	    database! Refresh to see the new user records.</h2>";
+		    } else {
+		    	document.getElementById("table").innerHTML = 
+	    	    "<h2>An error occurred when generating\
+	    	     users! Make sure to generate less than or \
+	    	     equal to 30 users at a time.</h2>";
+		    }
+	    }
+	    var api_host = document.getElementById("api_host").innerHTML;
+	    var api_port = document.getElementById("api_port").innerHTML;
+	    var uri = "http://" + api_host + ":" + api_port + "/users"
+	    var params = new FormData();
+	    params.append('n', n);
+	    xhttp.open('POST', uri, true);
+	    xhttp.send(params);
     }
-    var api_host = document.getElementById("api_host").innerHTML;
-    var api_port = document.getElementById("api_port").innerHTML;
-    var uri = "http://" + api_host + ":" + api_port + "/users"
-    var params = new FormData();
-    params.append('n', n);
-    xhttp.open('POST', uri, true);
-    xhttp.send(params);
   }
 
   function deleteUsers(e) {
-    console.log("delete users");
   	e.preventDefault();
-  	var xhttp = new XMLHttpRequest();
-  	xhttp.onreadystatechange = function() {
-    	if (xhttp.status >= 400) {
-    		document.getElementById("table").innerHTML = 
-    	    "An error occurred when deleting users";
-    	}
-    }
-    var api_host = document.getElementById("api_host").innerHTML;
-    var api_port = document.getElementById("api_port").innerHTML;
-    var uri = "http://" + api_host + ":" + api_port + "/users/destroy"
-    xhttp.open('POST', uri, true);
-    xhttp.send();
+  	if (confirm("Are you sure you want to delete all users?")) {
+	  	var xhttp = new XMLHttpRequest();
+	  	xhttp.onreadystatechange = function() {
+	    	var status = xhttp.status;
+		    if (status === 0 || (200 <= status && status < 400)) {
+		      // The request has been completed successfully
+		      document.getElementById("table").innerHTML = 
+	    	    "<h2>Successfully deleted all the users! \
+	    	    Refresh to see the new user records.</h2>";
+		    } else {
+		    	document.getElementById("table").innerHTML = 
+	    	    "<h2>An error occurred when deleting users</h2>";
+		    }
+	    }
+	    var api_host = document.getElementById("api_host").innerHTML;
+	    var api_port = document.getElementById("api_port").innerHTML;
+	    var uri = "http://" + api_host + ":" + api_port + "/users/destroy"
+	    xhttp.open('POST', uri, true);
+	    xhttp.send();
+	   }
   }
 
   document.getElementById('generate').addEventListener('click', generateUsers);
