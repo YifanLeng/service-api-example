@@ -22,12 +22,12 @@ default: &default
 
 development:
   <<: *default
-  database: srv_api_dev
+  database: srv_api_dev_yifan
 
 test:
   <<: *default
-  database: srv_api_test
+  database: srv_api_test_yifan
 
 production:
   <<: *default
-  database: srv_api_prod
+  database: srv_api_prod_yifan

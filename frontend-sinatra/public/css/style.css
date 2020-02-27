@@ -1,0 +1,14 @@
+/* change defaults */
+#api_host {      
+  display:none;
+}
+
+#api_port {     
+  display:none;
+}
+
+.top-buffer { 
+  margin-top:20px; 
+}
+
+

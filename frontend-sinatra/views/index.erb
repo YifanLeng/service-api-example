@@ -1,1 +1,95 @@
-<h2>Implement me!</h2>
+<div id="api_host">
+	<%=@api_host%>
+</div>
+<div id="api_port">
+	<%=@api_port%>
+</div>
+<div class="row top-buffer">
+	<div class="col-sm-3">
+		<p><font size="5">Total users: <%=@count%></font></p>
+	</div>
+	<div class="col-sm-9">
+    <div class="pull-right">
+			<!--<form class="form-inline pull-right" id="generate" action="/users" method="POST">-->
+				<form class="form-inline pull-right">
+			  <div class="form-group">
+			    <div class="input-group">
+			      <input type="text" class="form-control" id="n" name="count" placeholder="1">
+			      <div id="generate" type="submit" class="input-group-addon btn btn-default">Generate</div>
+			    </div>
+			  </div>
+				  <a class="btn btn-default glyphicon glyphicon-repeat" href="/" role="button"></a>
+				  <a id="delete" class="btn btn-default glyphicon glyphicon-trash" role="button"></a>
+       </form>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="table">
+	 <table class="table">
+    <thead>
+      <tr>
+      	<th>#</th>
+        <th>name</th>
+        <th>email</th>
+        <th>bio</th>
+      </tr>
+    </thead>
+    <tbody>
+    	<% @users.each_with_index do |user, idx| %>
+				<tr>
+				   <td><%= idx+1 %></td>
+				   <td><%= user["name"] %></td>
+				   <td><%= user["email"] %></td>
+				   <td><%= user["bio"] %></td>
+				</tr>
+			<% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  function generateUsers(e) {
+    e.preventDefault();
+    var n = document.getElementById("n").value;
+    // default to generate 1 user and add to the database
+    if (!n || n == '') {
+      n = "1";
+    }
+    console.log("generate " + n + " users");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    	if (xhttp.status >= 400) {
+    		document.getElementById("table").innerHTML = 
+    	    "An error occurred when generating users";
+    	}
+    }
+    var api_host = document.getElementById("api_host").innerHTML;
+    var api_port = document.getElementById("api_port").innerHTML;
+    var uri = "http://" + api_host + ":" + api_port + "/users"
+    var params = new FormData();
+    params.append('n', n);
+    xhttp.open('POST', uri, true);
+    xhttp.send(params);
+  }
+
+  function deleteUsers(e) {
+    console.log("delete users");
+  	e.preventDefault();
+  	var xhttp = new XMLHttpRequest();
+  	xhttp.onreadystatechange = function() {
+    	if (xhttp.status >= 400) {
+    		document.getElementById("table").innerHTML = 
+    	    "An error occurred when deleting users";
+    	}
+    }
+    var api_host = document.getElementById("api_host").innerHTML;
+    var api_port = document.getElementById("api_port").innerHTML;
+    var uri = "http://" + api_host + ":" + api_port + "/users/destroy"
+    xhttp.open('POST', uri, true);
+    xhttp.send();
+  }
+
+  document.getElementById('generate').addEventListener('click', generateUsers);
+  document.getElementById('delete').addEventListener('click', deleteUsers);
+</script>

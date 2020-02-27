@@ -1,0 +1,12 @@
+rake db:create DB_HOST=gigatwitter-db-postgresql-do-user-7074878-0.db.ondigitalocean.com DB_PASSWORD=iyajy1kgp2nczrpi RACK_ENV=development
+rake db:migrate DB_HOST=gigatwitter-db-postgresql-do-user-7074878-0.db.ondigitalocean.com DB_PASSWORD=iyajy1kgp2nczrpi RACK_ENV=development RACK_ENV=development
+
+
+# running locally
+# For service-api, running on port 4568
+DB_HOST=gigatwitter-db-postgresql-do-user-7074878-0.db.ondigitalocean.com DB_PASSWORD=iyajy1kgp2nczrpi bundle exec puma -p 4568
+
+# For frontend, running on port 4567
+API_HOST=127.0.0.1 API_PORT=4568 bundle exec puma -p 4567
+
+http://0.0.0.0:4567/
