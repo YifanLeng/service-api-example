@@ -18,7 +18,7 @@ get '/users' do
   begin
     users = []
     User.all.each do |user|
-    	hash_object = {
+      hash_object = {
         :name => user.name, 
         :email => user.email,
         :bio => user.bio
@@ -36,30 +36,30 @@ end
 post '/users' do
   count = params[:n].to_i || 1
   if count > 30
-  	status 400
+    status 400
   else
-	  count.times do
-	  	user = User.new
-	  	user.name = Faker::Name.name  
-	  	user.email = Faker::Internet.email
-	  	user.password = Faker::Internet.password
-	  	user.bio = Faker::Lorem.paragraph
-	  	# if saving to database fails 
-	  	# terminate returns 500 Internal error code
-	  	if !user.save
-	  		satus 500
-	  	end
-	  end
-	  status 200
-	 end
+    count.times do
+      user = User.new
+      user.name = Faker::Name.name  
+      user.email = Faker::Internet.email
+      user.password = Faker::Internet.password
+      user.bio = Faker::Lorem.paragraph
+      # if saving to database fails 
+      # terminate returns 500 Internal error code
+      if !user.save
+        satus 500
+      end
+    end
+    status 200
+   end
 end
 
 # Delete all users.
 post '/users/destroy' do
   begin
-  	User.delete_all
-  	status 200
+    User.delete_all
+    status 200
   rescue
-  	status 500
+    status 500
   end
 end
