@@ -60,6 +60,8 @@
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             var status = xhttp.status;
+            console.log("post request status is");
+            console.log(status);
             if (status === 0 || (200 <= status && status < 400)) {
               // The request has been completed successfully
               document.getElementById("table").innerHTML = 
